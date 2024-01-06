@@ -7,7 +7,7 @@ namespace GerenciaAutoNetAPI.Data
     {
 
         public DbSet<TipoDespesa> TipoDespesa { get; set; }
-
         public DbSet<Combustivel> Combustivel { get; set; }
+        public DbSet<Marca> Marca { get; set; }
     }
 }
