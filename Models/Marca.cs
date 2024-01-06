@@ -2,19 +2,19 @@
 
 namespace GerenciaAutoNetAPI.Models
 {
-    public class TipoDespesa
+    public class Marca
     {
         /// <summary>
-        /// Identificador
+        /// Identificador do registro
         /// </summary>
         public int id { get; set; }
 
         /// <summary>
-        /// Descrição do tipo de despesa
+        /// Nome da marca
         /// </summary>
-        [Required(ErrorMessage = "A descrição é obrigatória")]
-        [MaxLength(100)]
-        public String descricao { get; set; }
+        [Required(ErrorMessage = "O nome da marca é obrigatório")]
+        [MaxLength(100, ErrorMessage ="A descrição não pode ultrapassar 100 caracteres")]
+        public string nome { get; set; }
 
         /// <summary>
         /// Data que foi cadastrado

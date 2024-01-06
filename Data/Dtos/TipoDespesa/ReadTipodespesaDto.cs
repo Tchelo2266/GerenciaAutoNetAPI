@@ -1,6 +1,6 @@
 ﻿namespace GerenciaAutoNetAPI.Data.Dtos.TipoDespesa
 {
-    public class ReadTipodespesaDto
+    public class ReadTipoDespesaDto
     {
         /// <summary>
         /// Identificador do registro

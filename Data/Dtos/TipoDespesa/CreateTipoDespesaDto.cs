@@ -9,9 +9,5 @@ namespace GerenciaAutoNetAPI.Data.Dtos.TipoDespesa
         /// </summary>
         [Required(ErrorMessage = "A descrição é obrigatória")]
         public String descricao { get; set; }
-        /// <summary>
-        /// Data de cadastro
-        /// </summary>
-        public DateTime data_cadastro { get; set; }
     }
 }

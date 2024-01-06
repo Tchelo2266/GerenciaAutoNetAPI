@@ -1,19 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GerenciaAutoNetAPI.Models
+namespace GerenciaAutoNetAPI.Data.Dtos.Combustivel
 {
-    public class TipoDespesa
+    public class CreateCombustivelDto
     {
         /// <summary>
-        /// Identificador
-        /// </summary>
-        public int id { get; set; }
-
-        /// <summary>
-        /// Descrição do tipo de despesa
+        /// Descrição do combustível
         /// </summary>
         [Required(ErrorMessage = "A descrição é obrigatória")]
-        [MaxLength(100)]
+        [MaxLength(100, ErrorMessage ="A descrição não pode ultrapassar 100 caracteres")]
         public String descricao { get; set; }
 
         /// <summary>

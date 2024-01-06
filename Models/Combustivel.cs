@@ -2,19 +2,19 @@
 
 namespace GerenciaAutoNetAPI.Models
 {
-    public class TipoDespesa
+    public class Combustivel
     {
         /// <summary>
-        /// Identificador
+        /// Identificador do registro
         /// </summary>
         public int id { get; set; }
 
         /// <summary>
-        /// Descrição do tipo de despesa
+        /// Descrição do combustível
         /// </summary>
         [Required(ErrorMessage = "A descrição é obrigatória")]
         [MaxLength(100)]
-        public String descricao { get; set; }
+        public string descricao { get; set; }
 
         /// <summary>
         /// Data que foi cadastrado
