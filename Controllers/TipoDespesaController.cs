@@ -9,6 +9,7 @@ namespace GerenciaAutoNetAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Produces("application/json")]
     public class TipoDespesaController : ControllerBase
     {
         private DBContext _context;
@@ -20,7 +21,14 @@ namespace GerenciaAutoNetAPI.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Cadastrar um tipo de despesa
+        /// </summary>
+        /// <param name="tipoDedspesaDto"></param>
+        /// <returns>Objeto recém criado</returns>
+        /// <response code="201">Sucesso</response>
         [HttpPost]
+        [ProducesResponseType(typeof(ReadTipodespesaDto), StatusCodes.Status201Created)]
         public IActionResult Post([FromBody] CreateTipoDespesaDto tipoDedspesaDto)
         {
             TipoDespesa tipoDespesa = _mapper.Map<TipoDespesa>(tipoDedspesaDto);
@@ -30,7 +38,16 @@ namespace GerenciaAutoNetAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { tipoDespesa.id }, tipoDespesa);
         }
 
+        /// <summary>
+        /// Obtém um único tipo de despesa
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Tipo de despesa</returns>
+        /// <response code="200">Sucesso</response>
+        /// <response code="404">Nada encontrado</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ReadTipodespesaDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
             TipoDespesa? tipoDespesa = _context.TipoDespesa.FirstOrDefault(x => x.id == id);
