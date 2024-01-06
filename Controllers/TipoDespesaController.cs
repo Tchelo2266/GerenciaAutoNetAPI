@@ -38,6 +38,10 @@ namespace GerenciaAutoNetAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { tipoDespesa.id }, tipoDespesa);
         }
 
+        /// <summary>
+        /// Retorna a lista com todos os registros
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<ReadTipoDespesaDto> GetAll() 
         {
@@ -60,8 +64,8 @@ namespace GerenciaAutoNetAPI.Controllers
             TipoDespesa? tipoDespesa = _context.TipoDespesa.FirstOrDefault(x => x.id == id);
             if (tipoDespesa != null)
             {
-                ReadTipoDespesaDto tipodespesaDto = _mapper.Map<ReadTipoDespesaDto>(tipoDespesa);
-                return Ok(tipodespesaDto);
+                ReadTipoDespesaDto readTipodespesaDto = _mapper.Map<ReadTipoDespesaDto>(tipoDespesa);
+                return Ok(readTipodespesaDto);
             }
             return NotFound();
         }

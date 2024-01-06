@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GerenciaAutoNetAPI.Data;
 using GerenciaAutoNetAPI.Data.Dtos.Combustivel;
+using GerenciaAutoNetAPI.Data.Dtos.TipoDespesa;
 using GerenciaAutoNetAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -54,12 +55,15 @@ namespace GerenciaAutoNetAPI.Controllers
         /// <response code="200">Sucesso</response>
         /// <response code="404">Nada encontrado</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ReadCombustivelDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
         {
             Combustivel? combustivel = _context.Combustivel.FirstOrDefault(x => x.id == id);
             if (combustivel != null)
             {
-                return Ok(combustivel);
+                ReadCombustivelDto readCombustivelDto = _mapper.Map<ReadCombustivelDto>(combustivel);
+                return Ok(readCombustivelDto);
             }
             return NotFound();
         }
