@@ -1,0 +1,6 @@
+@GerenciaAutoNetAPI_HostAddress = http://localhost:5285
+
+GET {{GerenciaAutoNetAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
