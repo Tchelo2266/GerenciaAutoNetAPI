@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using GerenciaAutoNetAPI.Data;
 using GerenciaAutoNetAPI.Data.Dtos.TipoDespesa;
 using GerenciaAutoNetAPI.Models;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GerenciaAutoNetAPI.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
+    [ApiController]
     [Produces("application/json")]
     public class TipoDespesaController : ControllerBase
     {
@@ -29,12 +29,12 @@ namespace GerenciaAutoNetAPI.Controllers
         /// <response code="201">Sucesso</response>
         [HttpPost]
         [ProducesResponseType(typeof(ReadTipoDespesaDto), StatusCodes.Status201Created)]
-        public IActionResult Post([FromBody] CreateTipoDespesaDto tipoDedspesaDto)
+        public async Task<ActionResult<ReadTipoDespesaDto>> Post([FromBody] CreateTipoDespesaDto tipoDedspesaDto)
         {
             TipoDespesa tipoDespesa = _mapper.Map<TipoDespesa>(tipoDedspesaDto);
             tipoDespesa.data_cadastro = DateTime.Now;
-            _context.TipoDespesa.Add(tipoDespesa);
-            _context.SaveChanges();
+            await _context.TipoDespesa.AddAsync(tipoDespesa);
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { tipoDespesa.id }, tipoDespesa);
         }
 
@@ -43,9 +43,10 @@ namespace GerenciaAutoNetAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<ReadTipoDespesaDto> GetAll() 
+        [ProducesResponseType(typeof(IEnumerable<ReadTipoDespesaDto>), StatusCodes.Status200OK)]
+        public async Task<IEnumerable<ReadTipoDespesaDto>> GetAll() 
         {
-            IEnumerable<ReadTipoDespesaDto> listaTipoDespesaDto = _mapper.Map<IEnumerable<ReadTipoDespesaDto>>(_context.TipoDespesa);
+            IEnumerable<ReadTipoDespesaDto> listaTipoDespesaDto = _mapper.Map<IEnumerable<ReadTipoDespesaDto>>(await _context.TipoDespesa.ToListAsync());
             return listaTipoDespesaDto;
         }
 
@@ -59,9 +60,9 @@ namespace GerenciaAutoNetAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ReadTipoDespesaDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public async Task<ActionResult<ReadTipoDespesaDto>> GetById(int id)
         {
-            TipoDespesa? tipoDespesa = _context.TipoDespesa.FirstOrDefault(x => x.id == id);
+            TipoDespesa? tipoDespesa = await _context.TipoDespesa.FindAsync(id);
             if (tipoDespesa != null)
             {
                 ReadTipoDespesaDto readTipodespesaDto = _mapper.Map<ReadTipoDespesaDto>(tipoDespesa);
