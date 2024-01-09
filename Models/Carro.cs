@@ -23,7 +23,7 @@ namespace GerenciaAutoNetAPI.Models
         /// <summary>
         /// Nome do modelo ou apelido
         /// </summary>
-        [Required(ErrorMessage = "O nome é obrigatório")]
+        //[Required(ErrorMessage = "O nome é obrigatório")]
         public String nome { get; set; }
 
         /// <summary>

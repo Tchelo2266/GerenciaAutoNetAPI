@@ -62,16 +62,15 @@ namespace GerenciaAutoNetAPI.Controllers
         /// <response code="200">Sucesso</response>
         /// <response code="404">Nada encontrado</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ReadCarroDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Carro), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ReadCarroDto>> GetById(int id)
+        public async Task<Carro> GetById(int id)
         {
             Carro? carro = await _context.Carro.FindAsync(id);
             if (carro != null)
             {
-                return Ok(_mapper.Map<Carro>(carro));
             }
-            return NotFound();
+            return _mapper.Map<Carro>(carro);
         }
 
         /// <summary>
@@ -87,16 +86,17 @@ namespace GerenciaAutoNetAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ReadCarroDto>> Put(int id, [FromBody] UpdateCarroDto carroDto)
         {
-            if(id != carroDto.id)
+            if (id != carroDto.id)
             {
                 return BadRequest();
             }
-            Carro carro = _mapper.Map<Carro>(carroDto);
-            _context.Entry(carro).State = EntityState.Modified;
+            Carro carro = _mapper.Map<Carro>(await GetById(id));
+            _mapper.Map(carroDto, carro);
+            //_context.Entry(carro).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
 
-            return await GetById(id);
+            return Ok(_mapper.Map<ReadCarroDto>(await GetById(id)));
         }
 
         /// <summary>
