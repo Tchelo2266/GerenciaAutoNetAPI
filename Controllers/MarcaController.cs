@@ -5,11 +5,12 @@ using GerenciaAutoNetAPI.Data.Dtos.TipoDespesa;
 using GerenciaAutoNetAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GerenciaAutoNetAPI.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
+    [ApiController]
     [Produces("application/json")]
     public class MarcaController : ControllerBase
     {
@@ -30,12 +31,12 @@ namespace GerenciaAutoNetAPI.Controllers
         /// <response code="201">Sucesso</response>
         [HttpPost]
         [ProducesResponseType(typeof(ReadMarcaDto), StatusCodes.Status201Created)]
-        public IActionResult Post([FromBody] CreateMarcaDto createMarcaDto)
+        public async Task<ActionResult<ReadMarcaDto>> Post([FromBody] CreateMarcaDto createMarcaDto)
         {
             Marca marca = _mapper.Map<Marca>(createMarcaDto);
             marca.data_cadastro = DateTime.Now;
-            _context.Marca.Add(marca);
-            _context.SaveChanges();
+            await _context.Marca.AddAsync(marca);
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { marca.id }, marca);
         }
 
@@ -46,10 +47,10 @@ namespace GerenciaAutoNetAPI.Controllers
         /// <response code="200">Sucesso</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ReadMarcaDto>), StatusCodes.Status200OK)]
-        public IEnumerable<ReadMarcaDto> GetAll()
+        public async Task<ActionResult<IEnumerable<ReadMarcaDto>>> GetAll()
         {
-            IEnumerable<ReadMarcaDto> listaMarcas = _mapper.Map<IEnumerable<ReadMarcaDto>>(_context.Marca);
-            return listaMarcas;
+            IEnumerable<ReadMarcaDto> listaMarcas = _mapper.Map<IEnumerable<ReadMarcaDto>>(await _context.Marca.ToListAsync());
+            return Ok(listaMarcas);
         }
 
         /// <summary>
@@ -62,9 +63,9 @@ namespace GerenciaAutoNetAPI.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ReadMarcaDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetById(int id)
+        public async Task<ActionResult<ReadMarcaDto>> GetById(int id)
         {
-            Marca? marca = _context.Marca.FirstOrDefault(x => x.id == id);
+            Marca? marca = await _context.Marca.FindAsync(id);
             if (marca != null)
             {
                 ReadMarcaDto readMarcaDto = _mapper.Map<ReadMarcaDto>(marca);
